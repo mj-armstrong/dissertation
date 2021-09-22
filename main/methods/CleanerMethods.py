@@ -5,7 +5,7 @@ Created on 14 Jul 2021
 '''
 import pandas as pd
 import base64
-from future.builtins.misc import isinstance
+from future.builtins import isinstance
 
 
 def get_csv_df(file):
