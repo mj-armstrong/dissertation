@@ -10,7 +10,7 @@ from pages import Predict as pr  # ML functionality page
 
 
 def main():
-    st.sidebar.image("https://github.com/mj-armstrong/dissertation/blob/main/main/media/Red_White_QUB_Logo.jpg", use_column_width=True)
+    st.sidebar.image("https://raw.githubusercontent.com/mj-armstrong/dissertation/main/main/media/Red_White_QUB_Logo.jpg", use_column_width=True)
     page = st.radio('', ('CSV Data Cleaner', 'Create ML Classifier', 'Make Predictions'))
     st.set_option('deprecation.showPyplotGlobalUse', False)
     
