@@ -7,7 +7,7 @@ Created on 26 Jul 2021
 import mysql.connector
 
 def Conn():
-    conn = mysql.connector.connect(host = 'localhost', user = 'root', password = 'Phpcampbell8', database = 'marmstrong21')
+    conn = mysql.connector.connect(host = 'localhost', user = 'root', password = 'passwordhere', database = 'mydb')
     return conn
 
 #Example method to send SQL requests to database
