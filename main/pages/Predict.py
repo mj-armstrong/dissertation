@@ -12,6 +12,11 @@ from methods import CleanerMethods as cl  # custom script
 
 
 def PredictPagePrintOut():
+    '''
+    Summary:
+    Provides frontend elements of 'Make Predictions' tab using the streamlit framework.
+    '''
+    
     st.title('Make Predictions')
     
     classifier_names = []

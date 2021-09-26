@@ -12,6 +12,10 @@ from methods import CleanerMethods as cl
 
 
 def MLPagePrintOut():
+    '''
+    Summary:
+    Provides frontend elements of 'Create ML Classifier' tab using the streamlit framework.
+    '''
     
     df_set = False
     spliting = False

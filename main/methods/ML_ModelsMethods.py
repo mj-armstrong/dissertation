@@ -10,6 +10,17 @@ import yellowbrick.classifier as ybc
 
     
 def removeColumns(df, columnsIncluded):
+    '''
+    Summary:
+    Removes columns from a dataframe based on user selection.
+    
+    Parameters:
+    df - pandas dataframe, dataset to be edited.
+    columnsIncluded - list, column of headers in list that are NOT going to be removed from dataset. 
+    
+    Returns:
+    df - pandas dataframe, dataset with columns removed.
+    '''
     for col in columnsIncluded:
         if not columnsIncluded[col]:
             df.drop(col, axis=1, inplace=True)
@@ -17,6 +28,18 @@ def removeColumns(df, columnsIncluded):
 
         
 def checkColumnsAllFalse(columnsIncluded):
+    '''
+    Summary:
+    Checks if no columns have been selected by the user.
+    Error checking, as cannot proceed if dataset is empty.
+    Prints message for user if they have not selected any columns.
+    
+    Parameters:
+    columnsIncluded - list, column of headers in list that are NOT going to be removed from dataset. 
+    
+    Returns:
+    allFalse - boolean, True if there are no columns in list, else returns False.    
+    '''
     allFalse = True
     for col in columnsIncluded:
         if columnsIncluded[col]:
@@ -30,6 +53,18 @@ def checkColumnsAllFalse(columnsIncluded):
 
 
 def splitNumericCategoriesGetBounds(num_of_categories):
+    '''
+    Summary:
+    Gathers the parameters that will be used to split a numeric column of a dataset into discrete categories.
+    
+    Parameters:
+    num_of_categories - int, the number of categories that the user wants to split the column into.
+    
+    Returns:
+    bounds - dictionary, {index : [category_name, upper_bound_value*]}, datatype {int : [string, number]}
+    
+    *note - last index will not have an upper_bound_value
+    '''
     num_of_categories = int(num_of_categories)
     count = 1
     divider = st.selectbox('Upper Boundary Divider',
@@ -71,6 +106,18 @@ def splitNumericCategoriesGetBounds(num_of_categories):
 
 
 def boudaryValuesValid(bounds, num_of_categories):
+    '''
+    Summary:
+    Checks that the boundary values selected by the user are valid.
+    Valid boundary values cannot be equal and boundary_value_0 < boundary_value_1 etc.
+    
+    Parameters:
+    bounds - dictionary, {index : [category_name, upper_bound_value*]}, datatype {int : [string, number]}
+    num_of_categories - int, the number of categories that the user wants to split the column into.
+    
+    Returns:
+    valid - boolean, returns true if boundary values are valid, else returns false.
+    '''
     valid = False
     num_of_categories = int(num_of_categories)
     
@@ -91,6 +138,18 @@ def boudaryValuesValid(bounds, num_of_categories):
 
 
 def boudaryNamesValid(bounds, num_of_categories):
+    '''
+    Summary:
+    Checks that the boundary names selected by the user are valid.
+    Valid boundary names cannot be the same.
+    
+    Parameters:
+    bounds - dictionary, {index : [category_name, upper_bound_value*]}, datatype {int : [string, number]}
+    num_of_categories - int, the number of categories that the user wants to split the column into.
+    
+    Returns:
+    valid - boolean, returns true if boundary names are valid, else returns false.
+    '''
     valid = True
     num_of_categories = int(num_of_categories)
     
@@ -112,6 +171,20 @@ def boudaryNamesValid(bounds, num_of_categories):
 
 
 def splitNumericCategories0(bounds, num_of_categories, df, model_class):
+    '''
+    Summary:
+    Alters a dataframe so that the class column is changed from numeric values to discrete categories as dictated by the user.
+    Uses 'less than' to divide boundaries.
+    
+    Parameters:
+    bounds - dictionary, {index : [category_name, upper_bound_value*]}, datatype {int : [string, number]}
+    num_of_categories - int, the number of categories that the user wants to split the column into.
+    df - pandas dataframe, the dataset that is to be altered.
+    model_class - str, name of column header for class column selected by user.
+    
+    Returns:
+    df - pandas dataframe, returns altered dataframe.
+    '''
     num_of_categories = int(num_of_categories)
     df = df.astype({model_class: str})
     index = 0
@@ -136,6 +209,20 @@ def splitNumericCategories0(bounds, num_of_categories, df, model_class):
 
 
 def splitNumericCategories1(bounds, num_of_categories, df, model_class):
+    '''
+    Summary:
+    Alters a dataframe so that the class column is changed from numeric values to discrete categories as dictated by the user.
+    Uses 'less than or greater than' to divide boundaries.
+    
+    Parameters:
+    bounds - dictionary, {index : [category_name, upper_bound_value*]}, datatype {int : [string, number]}
+    num_of_categories - int, the number of categories that the user wants to split the column into.
+    df - pandas dataframe, the dataset that is to be altered.
+    model_class - str, name of column header for class column selected by user.
+    
+    Returns:
+    df - pandas dataframe, returns altered dataframe.
+    '''
     num_of_categories = int(num_of_categories)
     df = df.astype({model_class: str})
     index = 0
@@ -160,18 +247,34 @@ def splitNumericCategories1(bounds, num_of_categories, df, model_class):
 
 
 def runClassifier(df, model_class, method, n_neighbour):
+    '''
+    Summary:
+    Calls a method (selectClassifier) to create a scikit learn classifier using the supplied dataset and the users selected criteria.
+    Creates train test split (using a 70/30 split) in the dataframe.
+    Tests the Classifier.
+    Prints classifier metrics to the frontend.
+    
+    Parameters:
+    df - panda dataframe, dataframe on which the classifier is based.
+    model_class - string, identifying the dataframe column that is the class.
+    method - string, the machine learning algorithm that the user has selected.
+    n_neighbour - int, the number of nearest neighbours the user has selected if using a nearest neighbour classifier.
+    
+    Returns:
+    classifier - scikit learn classifier object.
+    '''
 
-    #Spliting dataset into training and test data
+    # Spliting dataset into training and test data
     from sklearn.model_selection import train_test_split
     X = df.drop(model_class, axis=1)
     y = df[model_class]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state = 0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
     
     classifier = selectClassifier(method, n_neighbour)
     
-    #create classifier
+    # create classifier
     classifier.fit(X_train, y_train)
-    #test classifier
+    # test classifier
     predictions = classifier.predict(X_test)
     
     from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -179,16 +282,16 @@ def runClassifier(df, model_class, method, n_neighbour):
     dl = list(set(df[model_class]))
     dl = sorted(dl)
     
-    #Classifier Metrics
+    # Classifier Metrics
     st.subheader('Classifier Metrics')
     from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
     accuracy = accuracy_score(y_test, predictions)
     st.write("Classifier Accuracy = " + str(round(accuracy, 2)))
-    f1 = f1_score(y_test, predictions, average = 'weighted')
+    f1 = f1_score(y_test, predictions, average='weighted')
     st.write("Weighted Average F1 Score = " + str(round(f1, 2)))
-    precision = precision_score(y_test, predictions, average = 'weighted')
+    precision = precision_score(y_test, predictions, average='weighted')
     st.write("Weighted Average Precision = " + str(round(precision, 2)))
-    recall = recall_score(y_test, predictions, average = 'weighted')
+    recall = recall_score(y_test, predictions, average='weighted')
     st.write("Weighted Average Recall = " + str(round(recall, 2)))
     
     st.subheader('Pairplot')
@@ -197,7 +300,7 @@ def runClassifier(df, model_class, method, n_neighbour):
     
     # Confusion Matrix
     confusion_matrix = ConfusionMatrixDisplay(cm, display_labels=dl)
-    confusion_matrix.plot(cmap = 'Reds')
+    confusion_matrix.plot(cmap='Reds')
     confusion_matrix.ax_.set(
                 title='Confusion Matrix',
                 xlabel='Predicted Value',
@@ -211,6 +314,17 @@ def runClassifier(df, model_class, method, n_neighbour):
 
     
 def selectClassifier(method, n_neighbour):
+    '''
+    Summary:
+    Creates the classifier from the user selection.
+    
+    Parameters:
+    method - string, classifier selcted by the user.
+    n_neighbour - int, the number of nearest neighbours the user has selected if using a nearest neighbour classifier.
+    
+    Returns:
+    classifier - scikit learn classifier object.
+    '''
     
     if method == 'Decision Tree':
         from sklearn.tree import DecisionTreeClassifier
@@ -238,6 +352,19 @@ def selectClassifier(method, n_neighbour):
 
 
 def checkDatasetClassNotEmpty(classColumn):
+    '''
+    Summary:
+    Error Checking.
+    Checks to see if any value in the class column is empty.
+    If there are any empty cells the classifier cannot be created from the dataset.
+    If false prints message to screen.
+        
+    Parameters:
+    classColumn - list, all the items in the datasets class column.
+    
+    Returns:
+    check - boolean, returns False if any items in the list are of type None. Else returns True.
+    '''
     check = True
     
     for item in classColumn:

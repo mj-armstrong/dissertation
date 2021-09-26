@@ -10,6 +10,10 @@ from methods import CleanerMethods as cl  # custom script
 
 
 def CleanerPagePrintOut():
+    '''
+    Summary:
+    Provides frontend elements of 'CSV Data Cleaner' tab using the streamlit framework.
+    '''
     st.title('CSV Cleaner')
     dataset = st.file_uploader("Upload CSV File", type=['csv'])
     if dataset is not None:
@@ -48,6 +52,7 @@ def CleanerPagePrintOut():
                 submitted = st.form_submit_button("Submit")
                 
         if submitted:
+            st.write(ef_options)
             st.write('Revised Dataset - saved to cache')
             revised_df = cl.cleanDataFrame(df, ef_options)
             st.write(revised_df)
