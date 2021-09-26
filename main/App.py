@@ -20,7 +20,7 @@ def main():
     
     Runs methods for each tab based on the users menu selection.
     '''
-    st.sidebar.image("media/Red_White_QUB_Logo.jpg", use_column_width=True)
+    st.sidebar.image("https://raw.githubusercontent.com/mj-armstrong/dissertation/main/main/media/Red_White_QUB_Logo.jpg", use_column_width=True)
     page = st.radio('', ('CSV Data Cleaner', 'Create ML Classifier', 'Make Predictions'))
     st.set_option('deprecation.showPyplotGlobalUse', False)
     
