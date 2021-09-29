@@ -2,6 +2,8 @@
 Created on 4 Sep 2021
 
 @author: matth
+
+This module contains the method that is responsible for the front end of the 3rd tab of the application. 
 '''
 
 import streamlit as st

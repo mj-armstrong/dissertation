@@ -2,6 +2,9 @@
 Created on 14 Jul 2021
 
 @author: matth
+
+This module contains all the methods that are primarily used in the 1st tab of the application. 
+This includes methods that clean the data.
 '''
 import pandas as pd
 import base64

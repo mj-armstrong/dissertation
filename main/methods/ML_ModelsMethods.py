@@ -2,6 +2,10 @@
 Created on 24 Aug 2021
 
 @author: matth
+
+This module contains all the methods that are primarily used in the 2nd tab of the application.
+This module includes methods to split the data into discrete categories as well as the methods 
+for creating classifiers.
 '''
 
 import streamlit as st

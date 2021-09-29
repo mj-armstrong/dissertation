@@ -2,6 +2,9 @@
 Created on 6 Sep 2021
 
 @author: matth
+
+This module contains all the methods that are primarily used in the 3rd tab. 
+These methods check that the dataset being classifier meets the requirements of the classifier selected.
 '''
 
 

@@ -2,6 +2,8 @@
 Created on 28 Jul 2021
 
 @author: matth
+
+This module contains the method that is responsible for the front end of the 1st tab of the application. 
 '''
 
 import streamlit as st
